@@ -10,7 +10,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#define ADS1220_CMD_RDATA 0x10
+#define ADS1220_CMD_RDATA               0x10
 #define ADS1220_CMD_POWERDOWN           0x02
 #define ADS1220_CMD_RESET               0x06
 #define ADS1220_CMD_RREG                0x20
@@ -38,9 +38,6 @@
 #define ADS1220_RAW_POSITIVE_FULL_SCALE 8388607
 #define ADS1220_RAW_NEGATIVE_FULL_SCALE (-8388608)
 
-static uint8_t ads1220_bitbang_transfer_byte(uint8_t tx_byte);
-
-/* Передача одного байта программным SPI */
 static uint8_t ads1220_bitbang_transfer_byte(uint8_t tx_byte)
 {
     uint8_t rx_byte = 0;
@@ -58,52 +55,29 @@ static uint8_t ads1220_bitbang_transfer_byte(uint8_t tx_byte)
     }
     return rx_byte;
 }
+
 static esp_err_t ads1220_wait_drdy(uint32_t timeout_ms)
 {
     const int64_t start_us = esp_timer_get_time();
-    const int64_t timeout_us =
-        (int64_t)timeout_ms * 1000;
+    const int64_t timeout_us = (int64_t)timeout_ms * 1000;
 
-    /*
-     * Фаза 1.
-     * После START/SYNC убеждаемся, что DRDY стал HIGH.
-     *
-     * Это означает, что старое состояние DRDY=LOW
-     * действительно сброшено и новое преобразование началось.
-     */
     while (gpio_get_level(ADS1220_DRDY_GPIO) == 0) {
-
-        if (
-            (esp_timer_get_time() - start_us) >
-            timeout_us
-        ) {
+        if ((esp_timer_get_time() - start_us) > timeout_us) {
             return ESP_ERR_TIMEOUT;
         }
-
         esp_rom_delay_us(10);
     }
 
-    /*
-     * Фаза 2.
-     * Теперь ждём окончания НОВОГО преобразования:
-     *
-     * DRDY HIGH -> LOW
-     */
     while (gpio_get_level(ADS1220_DRDY_GPIO) != 0) {
-
-        if (
-            (esp_timer_get_time() - start_us) >
-            timeout_us
-        ) {
+        if ((esp_timer_get_time() - start_us) > timeout_us) {
             return ESP_ERR_TIMEOUT;
         }
-
         esp_rom_delay_us(50);
     }
 
     return ESP_OK;
 }
-/* Отправка простой команды ADS1220 */
+
 static esp_err_t ads1220_send_command(uint8_t command)
 {
     gpio_set_level(ADS1220_CS_GPIO, 0);
@@ -228,59 +202,41 @@ esp_err_t ads1220_select_input(ads1220_input_t input)
     return ESP_OK;
 }
 
-esp_err_t ads1220_read_data(
-    int32_t *conversion_value
-)
+esp_err_t ads1220_read_data(int32_t *conversion_value)
 {
     if (conversion_value == NULL) {
         return ESP_ERR_INVALID_ARG;
     }
 
     const int max_reads = 6;
-
     int32_t previous_value = 0;
     bool have_previous = false;
 
     for (int read_index = 0; read_index < max_reads; read_index++) {
-
         gpio_set_level(ADS1220_CS_GPIO, 0);
         esp_rom_delay_us(10);
 
-        ads1220_bitbang_transfer_byte(
-            ADS1220_CMD_RDATA
-        );
-
+        ads1220_bitbang_transfer_byte(ADS1220_CMD_RDATA);
         esp_rom_delay_us(10);
 
-        const uint8_t byte_2 =
-            ads1220_bitbang_transfer_byte(0x00);
-
-        const uint8_t byte_1 =
-            ads1220_bitbang_transfer_byte(0x00);
-
-        const uint8_t byte_0 =
-            ads1220_bitbang_transfer_byte(0x00);
+        const uint8_t byte_2 = ads1220_bitbang_transfer_byte(0x00);
+        const uint8_t byte_1 = ads1220_bitbang_transfer_byte(0x00);
+        const uint8_t byte_0 = ads1220_bitbang_transfer_byte(0x00);
 
         esp_rom_delay_us(10);
-
         gpio_set_level(ADS1220_CS_GPIO, 1);
 
-        uint32_t raw_value =
-            ((uint32_t)byte_2 << 16) |
-            ((uint32_t)byte_1 << 8) |
-            (uint32_t)byte_0;
+        uint32_t raw_value = ((uint32_t)byte_2 << 16) |
+                             ((uint32_t)byte_1 << 8)  |
+                             (uint32_t)byte_0;
 
         if ((raw_value & 0x00800000U) != 0U) {
             raw_value |= 0xFF000000U;
         }
 
-        const int32_t current_value =
-            (int32_t)raw_value;
+        const int32_t current_value = (int32_t)raw_value;
 
-        if (
-            have_previous &&
-            current_value == previous_value
-        ) {
+        if (have_previous && current_value == previous_value) {
             *conversion_value = current_value;
             return ESP_OK;
         }
@@ -293,35 +249,27 @@ esp_err_t ads1220_read_data(
 
     return ESP_ERR_INVALID_RESPONSE;
 }
-esp_err_t ads1220_read_single(
-    int32_t *conversion_value,
-    uint32_t timeout_ms
-)
+
+esp_err_t ads1220_read_single(int32_t *conversion_value, uint32_t timeout_ms)
 {
     if (conversion_value == NULL) {
         return ESP_ERR_INVALID_ARG;
     }
 
-    esp_err_t result =
-        ads1220_start_conversion();
-
+    esp_err_t result = ads1220_start_conversion();
     if (result != ESP_OK) {
         return result;
     }
 
-    result = ads1220_wait_drdy(
-        timeout_ms
-    );
-
+    result = ads1220_wait_drdy(timeout_ms);
     if (result != ESP_OK) {
         return result;
     }
-esp_rom_delay_us(1000);
-    return ads1220_read_data(
-        conversion_value
-    );
-    
+
+    esp_rom_delay_us(1000);
+    return ads1220_read_data(conversion_value);
 }
+
 esp_err_t ads1220_read_average(ads1220_input_t input, int32_t *average_value, uint32_t sample_count, uint32_t timeout_ms, bool *saturated)
 {
     if (average_value == NULL || saturated == NULL || sample_count == 0) {
@@ -391,13 +339,12 @@ esp_err_t ads1220_init(void)
 {
     esp_err_t res;
 
-    /* Конфигурация пинов */
     const struct { gpio_num_t pin; gpio_mode_t mode; } pins[] = {
-        { ADS1220_CS_GPIO, GPIO_MODE_INPUT_OUTPUT },
-        { ADS1220_DRDY_GPIO, GPIO_MODE_INPUT  },
-        { ADS1220_SCLK_GPIO, GPIO_MODE_OUTPUT },
-        { ADS1220_MOSI_GPIO, GPIO_MODE_OUTPUT },
-        { ADS1220_MISO_GPIO, GPIO_MODE_INPUT  }
+        { ADS1220_CS_GPIO,   GPIO_MODE_INPUT_OUTPUT },
+        { ADS1220_DRDY_GPIO, GPIO_MODE_INPUT        },
+        { ADS1220_SCLK_GPIO, GPIO_MODE_OUTPUT       },
+        { ADS1220_MOSI_GPIO, GPIO_MODE_OUTPUT       },
+        { ADS1220_MISO_GPIO, GPIO_MODE_INPUT        }
     };
 
     for (size_t i = 0; i < sizeof(pins) / sizeof(pins[0]); i++) {
@@ -407,30 +354,22 @@ esp_err_t ads1220_init(void)
         if (res != ESP_OK) return res;
     }
 
-    /* Начальное состояние SPI */
-res = gpio_set_level(ADS1220_CS_GPIO, 1);
-if (res != ESP_OK) return res;
+    res = gpio_set_level(ADS1220_CS_GPIO, 1);
+    if (res != ESP_OK) return res;
 
-printf(
-    "INIT CS BEFORE RESET = %d\n",
-    gpio_get_level(ADS1220_CS_GPIO)
-);
+    printf("INIT CS BEFORE RESET = %d\n", gpio_get_level(ADS1220_CS_GPIO));
 
-res = gpio_set_level(ADS1220_SCLK_GPIO, 0);
-if (res != ESP_OK) return res;
+    res = gpio_set_level(ADS1220_SCLK_GPIO, 0);
+    if (res != ESP_OK) return res;
 
-res = gpio_set_level(ADS1220_MOSI_GPIO, 0);
-if (res != ESP_OK) return res;
+    res = gpio_set_level(ADS1220_MOSI_GPIO, 0);
+    if (res != ESP_OK) return res;
 
-esp_rom_delay_us(1000);
+    esp_rom_delay_us(1000);
 
-res = ads1220_reset();
+    res = ads1220_reset();
 
-printf(
-    "INIT CS AFTER RESET = %d\n",
-    gpio_get_level(ADS1220_CS_GPIO)
-);
+    printf("INIT CS AFTER RESET = %d\n", gpio_get_level(ADS1220_CS_GPIO));
 
-return res;
-    
+    return res;
 }
