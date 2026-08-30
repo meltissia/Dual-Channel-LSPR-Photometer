@@ -18,6 +18,37 @@
 - 2 × Hamamatsu S1087 (кремнієві фотодіоди visible spectrum)
 - Custom PCB (2-layer board)
 - Custom low-noise power supply
+### 3D Рендер плати
+| Top (3D) | Bottom (3D) |
+| :---: | :---: |
+| ![PCB 3D Top](docs/img/pcb_3D_TOP.png) | ![PCB 3D Bottom](docs/img/pcb_3D_BOTTOM.png) |
+
+### Трасування друкованої плати (PCB Layout)
+| Верхній шар (Top Layer) | Нижній шар (Bottom Layer) | Обидва шари (Combined) |
+| :---: | :---: | :---: |
+| ![PCB Top](docs/img/pcb_TOP.png) | ![PCB Bottom](docs/img/pcb_BOTTOM.png) | ![PCB Top+Bottom](docs/img/pcb_TOP+BOTTOM.png) |
+
+### Принципова схема (Schematic)
+<details>
+  <summary>🔍 <b>Повна схема (Full Schematic)</b></summary>
+  <br>
+  
+  ![Full Schematic](docs/img/scheme_ALL.png)
+</details>
+
+<details>
+  <summary>🔍 <b>Аналогова частина та АЦП (Analog Frontend & ADC)</b></summary>
+  <br>
+  
+  ![Analog Schematic](docs/img/scheme_ANALOG.png)
+</details>
+
+<details>
+  <summary>🔍 <b>Вузол живлення (Power Supply)</b></summary>
+  <br>
+  
+  ![Power Schematic](docs/img/scheme.POWER.png)
+</details>
 
 ## Firmware
 
