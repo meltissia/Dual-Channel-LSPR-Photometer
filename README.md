@@ -12,23 +12,41 @@
 
 ## Hardware
 
-- ESP32-WROOM-32 (MCU)
-- ADS1220 (24-bit Delta-Sigma ADC)
-- AD8616 (Dual precision rail-to-rail op-amp / TIA & buffer)
-- 2 × Hamamatsu S1087 (кремнієві фотодіоди visible spectrum)
-- Custom PCB (2-layer board)
-- Custom low-noise power supply
-### 3D Рендер плати
+### Основні компоненти (Core Components)
+
+- **Мікроконтролер (MCU):** ESP32-WROOM-32
+- **АЦП (ADC):** ADS1220 (24-bit Delta-Sigma)
+- **Операційний підсилювач (Op-Amp):** AD8616 (Dual precision rail-to-rail, конфігурація TIA & buffer)
+- **Оптичні сенсори:** 2 × Hamamatsu S1087 (кремнієві фотодіоди visible spectrum)
+- **Друкована плата:** Custom PCB (2-layer board, Rev.1)
+- **Живлення:** Custom low-noise power supply rail
+
+### Реальний прототип та відладка (Physical Prototype & Bring-up)
+
+На фото нижче зображено апаратний прототип першої ревізії (Rev.1) під час процесу першого запуску, налагодження аналогового тракту та тестування оптичного шляху (bring-up).
+
+![Rev.1 hardware prototype during bring-up and debugging](docs/img/bring-up_Rev1.png)
+
+*Зображення 1: Прототип Rev.1 на етапі відладки.*
+
+### 3D Рендер плати (3D Visualization)
+
 | Top (3D) | Bottom (3D) |
 | :---: | :---: |
 | ![PCB 3D Top](docs/img/pcb_3D_TOP.png) | ![PCB 3D Bottom](docs/img/pcb_3D_BOTTOM.png) |
 
+*Зображення 2: 3D-візуалізація верхньої та нижньої сторін плати.*
+
 ### Трасування друкованої плати (PCB Layout)
+
 | Верхній шар (Top Layer) | Нижній шар (Bottom Layer) | Обидва шари (Combined) |
 | :---: | :---: | :---: |
 | ![PCB Top](docs/img/pcb_TOP.png) | ![PCB Bottom](docs/img/pcb_BOTTOM.png) | ![PCB Top+Bottom](docs/img/pcb_TOP+BOTTOM.png) |
 
+*Зображення 3: Топологія шарів друкованої плати.*
+
 ### Принципова схема (Schematic)
+
 <details>
   <summary>🔍 <b>Повна схема (Full Schematic)</b></summary>
   <br>
@@ -49,7 +67,6 @@
   
   ![Power Schematic](docs/img/scheme.POWER.png)
 </details>
-
 ## Firmware
 
 - Мова C (ESP-IDF)
