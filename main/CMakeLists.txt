@@ -1,0 +1,9 @@
+idf_component_register(
+    SRCS
+        "main.c"
+        "ads1220.c"
+        "photometer.c"
+        "photometer_output.c"
+    INCLUDE_DIRS
+        "."
+)
