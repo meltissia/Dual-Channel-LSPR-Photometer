@@ -1,6 +1,6 @@
 # UART Bring-up Logs
 
-Референсний набір даних: [`rev1_ads1220_bringup_log.csv`](rev1_ads1220_bringup_log.csv).
+Референсний набір даних: [`rev1_ads1220_.bringup_log.csv`](rev1_ads1220_.bringup_log.csv).
 
 Цей набір даних збережено як підтвердження роботи цифрового acquisition pipeline Rev.1.0 після стабілізації SPI-інтерфейсу. Він містить двоканальне зчитування ADC, dark correction, перерахунок ADC-коду, moving-average processing, розрахунок співвідношення каналів та структурований UART output.
 
