@@ -113,8 +113,9 @@ DATA,40004171,26,1043353,1031889,11464,2798.828,11595,2830.811,204278,682426,-47
 
 Кожен рядок фіксує сирі коди обох каналів, значення темного зміщення, скориговані сигнали в $\mu\text{V}$, результат фільтрації, обчислене співвідношення та статус-прапорці saturation/validity.
 
-Повний лог першого запуску: [**logs/rev1_ads1220_bringup_log.csv**](logs/rev1_ads1220_bringup_log.csv)  
-Структура полів та опис даних: [**logs/README.md**](logs/README.md)
+Повний лог першого запуску: [**rev1_ads1220_bringup_log.csv**](docs/logs/rev1_ads1220_bringup_log.csv)
+
+Структура полів та опис даних: [**Data Format & Bring-up Logs**](docs/logs/README.md)
 
 > Дані першого запуску демонструють стабільну роботу цифрового SPI-тракту після усунення апаратних збоїв шини і не є метрологічно каліброваними.
 
@@ -135,7 +136,7 @@ DATA,40004171,26,1043353,1031889,11464,2798.828,11595,2830.811,204278,682426,-47
 
 - **Hardware:** [Hardware Architecture & Pinout](docs/hardware.md) · [Hardware Errata](docs/ERRATA.md)
 - **Firmware:** [Firmware Implementation & Notes](docs/firmware.md) · [Firmware Errata](docs/FIRMWARE_ERRATA.md)
-- **Experimental Data:** [Data Format & Bring-up Logs](logs/README.md)
+- **Experimental Data:** [Data Format & Bring-up Logs](docs/logs/README.md)
 
 ---
 
