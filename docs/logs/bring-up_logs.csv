@@ -1,0 +1,23 @@
+# UART Bring-up Logs
+
+Reference dataset: [`rev1_ads1220_bringup_log.csv`](rev1_ads1220_bringup_log.csv).
+
+The dataset is preserved as evidence of the working Rev.1.0 digital acquisition pipeline after SPI stabilization. It contains two-channel ADC acquisition, dark correction, ADC-code conversion, moving-average processing, ratio calculation, and structured UART output.
+
+During stable portions of the log, the previously observed structured SPI corruption, byte shifts, and large invalid ADC-code jumps are absent.
+
+The recorded physical signal values are not metrologically validated and must not be interpreted as measurements of photometer accuracy, noise floor, sensitivity, or long-term stability.
+
+## CSV Output Schema
+```text
+record_type, timestamp_us, measurement_number,
+ch1_raw, ch1_dark, ch1_corrected, ch1_uv, ch1_filtered, ch1_filtered_uv,
+ch2_raw, ch2_dark, ch2_corrected, ch2_uv, ch2_filtered, ch2_filtered_uv,
+ratio, filtered_ratio, ratio_valid, filtered_ratio_valid, ch1_saturated, ch2_saturated
+```
+
+### Sample Line
+```text
+DATA,40004171,26,1043353,1031889,11464,2798.828,11595,2830.811,204278,682426,-478148,-116735.352,-473754,-115662.598,-0.023976,-0.024475,1,1,0,0
+```
+*Note: Values represent bring-up validation data, not absolute metrological calibration.*
