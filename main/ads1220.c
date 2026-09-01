@@ -222,7 +222,7 @@ esp_err_t ads1220_read_data(int32_t *conversion_value)
         const uint8_t byte_2 = ads1220_bitbang_transfer_byte(0x00);
         const uint8_t byte_1 = ads1220_bitbang_transfer_byte(0x00);
         const uint8_t byte_0 = ads1220_bitbang_transfer_byte(0x00);
-
+        
         esp_rom_delay_us(10);
         gpio_set_level(ADS1220_CS_GPIO, 1);
 
