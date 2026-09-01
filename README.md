@@ -133,8 +133,8 @@ DATA,40004171,26,1043353,1031889,11464,2798.828,11595,2830.811,204278,682426,-47
 
 ## Documentation
 
-- **Hardware:** [Hardware Architecture & Pinout](docs/hardware.md) · [Hardware Errata](docs/hardware_errata.md)
-- **Firmware:** [Firmware Implementation & Notes](docs/firmware.md) · [Firmware Errata](docs/firmware_errata.md)
+- **Hardware:** [Hardware Architecture & Pinout](docs/hardware.md) · [Hardware Errata](docs/ERRATA.md)
+- **Firmware:** [Firmware Implementation & Notes](docs/firmware.md) · [Firmware Errata](docs/FIRMWARE_ERRATA.md)
 - **Experimental Data:** [Data Format & Bring-up Logs](logs/README.md)
 
 ---

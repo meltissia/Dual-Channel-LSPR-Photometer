@@ -1,15 +1,23 @@
-# Firmware Implementation & Bring-up Notes
+# Реалізація прошивки та нотатки Bring-up
 
-Built with **ESP-IDF v6.0.2** for target `esp32`.
+Зібрано з використанням **ESP-IDF v6.0.2** для target `esp32`.
 
-## Module Breakdown
-- `ads1220.c / .h`: Low-level driver, register config via `WREG`/`RREG` with read-back verification, `DRDY` timeout handling, conversion triggering, raw code to µV scaling.
-- `photometer.c / .h`: Dual-channel multiplexing, dark offset calibration & correction, boxcar moving average (`N = 8`), saturation checks, ratiometric calculation.
-- `photometer_output.c / .h`: Structured CSV UART stream generation with timestamping and status flags.
-- `main.c`: Hardware bring-up orchestration and continuous acquisition loop.
+## Структура модулів
 
-## Bring-up Notes & Workarounds
-- Hardware SPI communication with ADS1220 was unstable during Rev.1.0 bring-up even at reduced clock rates. The driver was therefore switched to GPIO bit-bang SPI with explicitly controlled `CS`, `SCLK`, `DIN`, and `DOUT` timing.
-- Conservative bit timing was required for reliable register access and 24-bit conversion-data reads.
-- `DRDY` is polled with a timeout before conversion data are read, preventing indefinite blocking and reads before conversion completion.
-- On Rev.1.0, additional repeated `RDATA` validation was required because individual 24-bit reads could still become corrupted despite valid `DRDY`.
+- `ads1220.c / .h`: Низькорівневий драйвер, конфігурація регістрів через `WREG` / `RREG` із read-back перевіркою, обробка timeout для `DRDY`, запуск перетворень та перерахунок сирого ADC-коду у µV.
+
+- `photometer.c / .h`: Двоканальне мультиплексоване зчитування, калібрування та корекція dark offset, boxcar moving average (`N = 8`), перевірка saturation та розрахунок співвідношення каналів.
+
+- `photometer_output.c / .h`: Формування структурованого CSV-потоку через UART із timestamp та status flags.
+
+- `main.c`: Керування апаратним bring-up та безперервним циклом збору даних.
+
+## Нотатки Bring-up та Workaround
+
+- Під час bring-up Rev.1.0 апаратний SPI-зв'язок з ADS1220 залишався нестабільним навіть при знижених тактових частотах. Тому драйвер було переведено на GPIO bit-bang SPI з явним програмним керуванням таймінгами `CS`, `SCLK`, `DIN` та `DOUT`.
+
+- Для надійного доступу до регістрів та читання 24-бітних результатів перетворення знадобилися консервативні часові інтервали між змінами станів цифрових ліній.
+
+- Перед читанням результату перетворення стан `DRDY` опитується з timeout, що запобігає необмеженому блокуванню та читанню даних до завершення ADC conversion.
+
+- На Rev.1.0 додатково знадобилася повторна валідація `RDATA`, оскільки окремі 24-бітні читання могли залишатися пошкодженими навіть при коректному стані `DRDY`.
