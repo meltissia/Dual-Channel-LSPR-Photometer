@@ -39,5 +39,5 @@
 ## Рендери PCB Layout
 
 ![Top Layer](img/pcb_TOP.png)
-![Bottom Layer](pcb_BOTTOM.png)
-![Top+Bottom Layers](pcb_TOP+BOTTOM.png)
+![Bottom Layer](img/pcb_BOTTOM.png)
+![Top+Bottom Layers](img/pcb_TOP+BOTTOM.png)
