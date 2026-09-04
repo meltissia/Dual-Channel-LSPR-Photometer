@@ -38,11 +38,17 @@
 
 ## Рендери PCB Layout
 
-![Top Layer](img/pcb_TOP.png)
-*Трасування верхнього шару (Top Layer): вхідний аналоговий тракт, АЦП та мікроконтролер*
+<figure>
+  <img src="img/pcb_TOP.png" alt="PCB Top Layer">
+  <figcaption align="center"><em>Рисунок 1 — Трасування верхнього шару (Top Layer): аналоговий тракт TIA, АЦП та обв'язка ESP32</em></figcaption>
+</figure>
 
-![Bottom Layer](img/pcb_BOTTOM.png)
-*Трасування нижнього шару (Bottom Layer): опорний полігон землі (GND plane) та розподіл живлення*
+<figure>
+  <img src="img/pcb_BOTTOM.png" alt="PCB Bottom Layer">
+  <figcaption align="center"><em>Рисунок 2 — Трасування нижнього шару (Bottom Layer): суцільний полігон землі (GND plane) та силові ланцюги</em></figcaption>
+</figure>
 
-![Top+Bottom Layers](img/pcb_TOP+BOTTOM.png)
-*Наскрізний вигляд обох шарів: взаємна топологія сигнальних ліній та перехідних отворів*
+<figure>
+  <img src="img/pcb_TOP+BOTTOM.png" alt="PCB Top and Bottom Layers">
+  <figcaption align="center"><em>Рисунок 3 — Комбінований вигляд шарів (Top + Bottom): взаємне розташування трас і перехідних отворів</em></figcaption>
+</figure>
